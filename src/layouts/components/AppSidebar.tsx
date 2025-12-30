@@ -46,17 +46,17 @@ export function AppSidebar() {
 
     return (
         <aside
-            className="surface-card border-right-1 surface-border h-screen overflow-y-auto p-3"
-            style={{
-                position: "fixed",
-                top: "60px",
-                left: 0,
-                width: "250px",
-                height: "calc(100vh - 60px)",
-                zIndex: 996,
-            }}
-        >
-            <AppMenu />
-        </aside>
+        className="surface-card border-right-1 surface-border h-screen overflow-y-auto p-3"
+        style={{
+            position: "fixed",
+            top: "60px",
+            left: 0,
+            width: "250px",
+            height: "calc(100vh - 60px)",
+            zIndex: 996,
+        }}
+    >
+        <AppMenu />
+    </aside>
     );
 }

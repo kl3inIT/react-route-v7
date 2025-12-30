@@ -1,58 +1,19 @@
+import { type JmixRole, JMIX_ROLES } from "./roles.config";
 
 export const ROUTES = {
-    // Public
     AUTH_CALLBACK: "/auth/callback",
-
-    // Main
     DASHBOARD: "/",
     PROFILE: "/profile",
-
-    // Users
     USERS: "/users",
-
-    // Management
-    PRODUCTS: "/products",
-    ORDERS: "/orders",
-    REPORTS: "/reports",
-
-    // System
     SETTINGS: "/settings",
 } as const;
-
-// ============================================================================
-// Jmix Resource Roles
-// Đây là các roles được định nghĩa trong Jmix và map lên Keycloak
-// https://docs.jmix.io/jmix/security/resource-roles.html
-// ============================================================================
-
-export const JMIX_ROLES = {
-    // Built-in roles
-    SYSTEM_FULL_ACCESS: "system-full-access",
-    UI_MINIMAL: "ui-minimal",
-
-    // Custom roles (định nghĩa trong Jmix backend)
-    ADMIN: "admin",
-    MANAGER: "manager",
-    USER: "user",
-
-    // Feature-specific roles
-    USERS_ADMIN: "users-admin",
-    PRODUCTS_ADMIN: "products-admin",
-    ORDERS_ADMIN: "orders-admin",
-    REPORTS_VIEWER: "reports-viewer",
-} as const;
-
-export type JmixRole = (typeof JMIX_ROLES)[keyof typeof JMIX_ROLES];
-
 
 export interface MenuItemConfig {
     label: string;
     icon?: string;
     to?: string;
-    url?: string;
-    target?: string;
     badge?: string;
-    roles?: JmixRole[]; // Cần có ÍT NHẤT 1 role trong list
+    roles?: JmixRole[];
     items?: MenuItemConfig[];
     visible?: boolean;
 }
@@ -70,18 +31,13 @@ export const MENU_CONFIG: MenuItemConfig[] = [
                 label: "Người dùng",
                 icon: "pi pi-users",
                 to: ROUTES.USERS,
-                roles: [JMIX_ROLES.USERS_ADMIN, JMIX_ROLES.ADMIN, JMIX_ROLES.SYSTEM_FULL_ACCESS],
+                roles: [JMIX_ROLES.SYSTEM_FULL_ACCESS],
             },
         ],
     },
     {
         label: "Quản lý",
         roles: [
-            JMIX_ROLES.PRODUCTS_ADMIN,
-            JMIX_ROLES.ORDERS_ADMIN,
-            JMIX_ROLES.REPORTS_VIEWER,
-            JMIX_ROLES.MANAGER,
-            JMIX_ROLES.ADMIN,
             JMIX_ROLES.SYSTEM_FULL_ACCESS,
         ],
         items: [

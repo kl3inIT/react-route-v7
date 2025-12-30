@@ -1,3 +1,3 @@
-export { NotificationProvider, useNotification } from "./NotificationProvider";
+export { NotificationProvider, useNotification } from "../../contexts/NotificationProvider.tsx";
 export { toast, toastRef } from "./toast";
 

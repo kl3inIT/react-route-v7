@@ -1,9 +1,11 @@
+import { Toolbar } from 'primereact/toolbar';
+
 export function AppFooter() {
     return (
-        <div className="surface-card p-3 flex align-items-center justify-content-center border-top-1 surface-border">
-            <i className="pi pi-prime mr-2" />
-            <span>by</span>
-            <span className="font-medium ml-2">PrimeReact</span>
-        </div>
+        <Toolbar
+            start={<span>© 2025 React Router V7 Demo</span>}
+            center={<span>Kl3inIT</span>}
+            end={<span>v1.0.0</span>}
+        />
     );
 }

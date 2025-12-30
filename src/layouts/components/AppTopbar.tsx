@@ -1,20 +1,23 @@
-import { useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router";
-import { useAuth } from "react-oidc-context";
-import { Button } from "primereact/button";
-import { Menu } from "primereact/menu";
-import { Badge } from "primereact/badge";
-import { Avatar } from "primereact/avatar";
-import { Toolbar } from "primereact/toolbar";
-import type { MenuItem } from "primereact/menuitem";
-import { LayoutContext } from "../context/LayoutContext";
-import { ROUTES } from "@/config/routes";
+import {useContext, useRef} from "react";
+import {Link, useNavigate} from "react-router";
+import {useAuth} from "react-oidc-context";
+import {Button} from "primereact/button";
+import {Menu} from "primereact/menu";
+import {Badge} from "primereact/badge";
+import {Avatar} from "primereact/avatar";
+import {Toolbar} from "primereact/toolbar";
+import type {MenuItem} from "primereact/menuitem";
+import {LayoutContext} from "@/layouts";
+import {ROUTES} from "@/config/routes.config";
+import {IconField} from 'primereact/iconfield';
+import {InputIcon} from 'primereact/inputicon';
+import {InputText} from 'primereact/inputtext';
 
 export function AppTopbar() {
-    const { onMenuToggle } = useContext(LayoutContext);
+    const {onMenuToggle} = useContext(LayoutContext);
     const auth = useAuth();
     const navigate = useNavigate();
-    const userMenuRef = useRef<Menu>(null);
+    const userMenu = useRef<Menu>(null);
 
     const user = auth.user?.profile;
 
@@ -22,9 +25,9 @@ export function AppTopbar() {
         {
             label: user?.name || user?.preferred_username || "User",
             disabled: true,
-            style: { fontWeight: "bold" },
+            style: {fontWeight: "bold"},
         },
-        { separator: true },
+        {separator: true},
         {
             label: "Thông tin cá nhân",
             icon: "pi pi-user",
@@ -35,7 +38,7 @@ export function AppTopbar() {
             icon: "pi pi-cog",
             command: () => navigate(ROUTES.SETTINGS),
         },
-        { separator: true },
+        {separator: true},
         {
             label: "Đăng xuất",
             icon: "pi pi-sign-out",
@@ -45,21 +48,24 @@ export function AppTopbar() {
 
     const startContent = (
         <>
-            <Button
-                icon="pi pi-bars"
-                onClick={onMenuToggle}
-                rounded
-                text
-                severity="secondary"
-                className="mr-2"
-            />
             <Link to="/" className="no-underline flex align-items-center gap-2">
-                <i className="pi pi-prime text-primary text-2xl" />
+                <i className="pi pi-prime text-primary text-2xl"/>
                 <span className="font-bold text-xl text-900">Admin Panel</span>
             </Link>
+            <Button
+                className="ml-2"
+                icon="pi pi-bars"
+                onClick={onMenuToggle}
+            />
         </>
     );
 
+    const centerContent = (
+        <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"/>
+            <InputText placeholder="Search"/>
+        </IconField>
+    );
     const endContent = (
         <>
             <Button
@@ -67,26 +73,25 @@ export function AppTopbar() {
                 rounded
                 text
                 severity="secondary"
-                className="p-overlay-badge mr-2"
             >
-                <Badge value="3" severity="danger" />
+                <Badge value="3" severity="danger"/>
             </Button>
 
             <Avatar
                 label={user?.name?.charAt(0).toUpperCase() || "U"}
                 shape="circle"
-                className="bg-primary text-white cursor-pointer"
-                onClick={(e) => userMenuRef.current?.toggle(e)}
+                onClick={(event) => userMenu.current?.toggle(event)}
             />
-            <Menu model={userMenuItems} popup ref={userMenuRef} />
+            <Menu model={userMenuItems} popup ref={userMenu}/>
         </>
     );
 
     return (
         <Toolbar
             start={startContent}
+            center={centerContent}
             end={endContent}
-            className="surface-card shadow-2 px-4 border-none border-noround"
+            
             style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 997, height: "60px" }}
         />
     );

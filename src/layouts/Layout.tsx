@@ -1,13 +1,13 @@
-import { useContext, useEffect } from "react";
-import { Outlet, useLocation, useNavigation } from "react-router";
-import { ProgressBar } from "primereact/progressbar";
-import { AppTopbar } from "./components/AppTopbar";
-import { AppSidebar } from "./components/AppSidebar";
-import { AppFooter } from "./components/AppFooter";
-import { LayoutContext, type LayoutState } from "./context/LayoutContext";
+import {useContext, useEffect} from "react";
+import {Outlet, useLocation, useNavigation} from "react-router";
+import {ProgressBar} from "primereact/progressbar";
+import {AppTopbar} from "./components/AppTopbar";
+import {AppSidebar} from "./components/AppSidebar";
+import {AppFooter} from "./components/AppFooter";
+import {LayoutContext, type LayoutState} from "./context/LayoutContext";
 
 export function Layout() {
-    const { layoutState, setLayoutState, isDesktop } = useContext(LayoutContext);
+    const {layoutState, setLayoutState, isDesktop} = useContext(LayoutContext);
     const location = useLocation();
     const navigation = useNavigation();
 
@@ -15,7 +15,6 @@ export function Layout() {
     const isMobile = !isDesktop();
     const sidebarVisible = !isMobile && !layoutState.staticMenuDesktopInactive;
 
-    // Hide menu on route change (mobile)
     useEffect(() => {
         setLayoutState((prev: LayoutState) => ({
             ...prev,
@@ -27,11 +26,18 @@ export function Layout() {
     return (
         <div className="min-h-screen surface-ground">
             <AppTopbar />
-
+            
             {isLoading && (
                 <ProgressBar
                     mode="indeterminate"
-                    style={{ height: "3px", position: "fixed", top: "60px", left: 0, right: 0, zIndex: 1000 }}
+                    style={{ 
+                        height: "3px", 
+                        position: "fixed", 
+                        top: "60px", 
+                        left: 0, 
+                        right: 0, 
+                        zIndex: 1000 
+                    }}
                 />
             )}
 
@@ -50,6 +56,7 @@ export function Layout() {
                 <main className="flex-1 p-4">
                     <Outlet />
                 </main>
+
                 <AppFooter />
             </div>
         </div>
