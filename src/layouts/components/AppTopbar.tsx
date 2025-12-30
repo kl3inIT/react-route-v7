@@ -17,7 +17,7 @@ export function AppTopbar() {
     const {onMenuToggle} = useContext(LayoutContext);
     const auth = useAuth();
     const navigate = useNavigate();
-    const userMenuRef = useRef<Menu>(null);
+    const userMenu = useRef<Menu>(null);
 
     const user = auth.user?.profile;
 
@@ -80,9 +80,9 @@ export function AppTopbar() {
             <Avatar
                 label={user?.name?.charAt(0).toUpperCase() || "U"}
                 shape="circle"
-                onClick={(e) => userMenuRef.current?.toggle(e)}
+                onClick={(event) => userMenu.current?.toggle(event)}
             />
-            <Menu model={userMenuItems} popup ref={userMenuRef}/>
+            <Menu model={userMenuItems} popup ref={userMenu}/>
         </>
     );
 
@@ -91,6 +91,8 @@ export function AppTopbar() {
             start={startContent}
             center={centerContent}
             end={endContent}
+            
+            style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 997, height: "60px" }}
         />
     );
 }

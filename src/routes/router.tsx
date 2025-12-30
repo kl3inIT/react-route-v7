@@ -1,5 +1,5 @@
 import { RequirePermission } from "./RequirePermission";
-import { JMIX_ROLES } from "@/config/routes.config";
+import { JMIX_ROLES } from "@/config/roles.config";
 import { ROUTES } from "@/config/routes.config";
 import { createBrowserRouter } from "react-router";
 import { ProtectedRoute } from "./ProtectedRoute";

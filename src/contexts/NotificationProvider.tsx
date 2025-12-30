@@ -1,6 +1,6 @@
 import { Toast, type ToastMessage } from "primereact/toast";
 import { createContext, useContext, useEffect, useRef, type PropsWithChildren } from "react";
-import { toastRef as globalToastRef } from "./toast";
+import { toastRef as globalToastRef } from "../services/notification/toast.ts";
 
 type NotificationSeverity = "success" | "info" | "warn" | "error";
 

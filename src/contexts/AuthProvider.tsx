@@ -2,8 +2,8 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useCallback } from "react";
 import { AuthProvider as OidcProvider, useAuth } from "react-oidc-context";
 
-import { oidcConfig } from "./oidcConfig";
-import { registerAccessToken, unregisterAccessToken } from "./accessTokenProvider";
+import { oidcConfig } from "../config/oidc.config.ts";
+import { registerAccessToken, unregisterAccessToken } from "../services/auth/accessTokenProvider.ts";
 
 function AccessTokenRegistration({ children }: PropsWithChildren) {
     const auth = useAuth();

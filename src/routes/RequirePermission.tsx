@@ -1,7 +1,7 @@
 // src/router/RequirePermission.tsx
 import { Navigate, Outlet } from "react-router";
 import { usePermissions } from "@/hooks/usePermissions";
-import type { JmixRole } from "@/config/routes.config";
+import type { JmixRole } from "@/config/roles.config";
 
 interface RequirePermissionProps {
     roles: JmixRole[];

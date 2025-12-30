@@ -1,4 +1,4 @@
-import { createContext, useState, type PropsWithChildren } from "react";
+import React, { createContext, useState, type PropsWithChildren } from "react";
 
 export interface MenuContextProps {
     activeMenu: string;
