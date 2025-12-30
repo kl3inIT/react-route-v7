@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from "react";
 import { useAuth } from "react-oidc-context";
-import { type JmixRole, JMIX_ROLES, type MenuItemConfig } from "@/config/routes";
+import { type JmixRole, JMIX_ROLES, type MenuItemConfig } from "@/config/routes.config";
 
 /**
  * Jmix OIDC roles configuration

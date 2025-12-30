@@ -1,29 +1,11 @@
 
 export const ROUTES = {
-    // Public
     AUTH_CALLBACK: "/auth/callback",
-
-    // Main
     DASHBOARD: "/",
     PROFILE: "/profile",
-
-    // Users
     USERS: "/users",
-
-    // Management
-    PRODUCTS: "/products",
-    ORDERS: "/orders",
-    REPORTS: "/reports",
-
-    // System
     SETTINGS: "/settings",
 } as const;
-
-// ============================================================================
-// Jmix Resource Roles
-// Đây là các roles được định nghĩa trong Jmix và map lên Keycloak
-// https://docs.jmix.io/jmix/security/resource-roles.html
-// ============================================================================
 
 export const JMIX_ROLES = {
     // Built-in roles
@@ -43,7 +25,6 @@ export const JMIX_ROLES = {
 } as const;
 
 export type JmixRole = (typeof JMIX_ROLES)[keyof typeof JMIX_ROLES];
-
 
 export interface MenuItemConfig {
     label: string;
@@ -70,7 +51,7 @@ export const MENU_CONFIG: MenuItemConfig[] = [
                 label: "Người dùng",
                 icon: "pi pi-users",
                 to: ROUTES.USERS,
-                roles: [JMIX_ROLES.USERS_ADMIN, JMIX_ROLES.ADMIN, JMIX_ROLES.SYSTEM_FULL_ACCESS],
+                roles: [JMIX_ROLES.SYSTEM_FULL_ACCESS],
             },
         ],
     },
