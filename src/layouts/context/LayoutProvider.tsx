@@ -1,19 +1,5 @@
-import { createContext, useState, useCallback, type PropsWithChildren } from "react";
-
-export interface LayoutState {
-    staticMenuDesktopInactive: boolean;
-    overlayMenuActive: boolean;
-    staticMenuMobileActive: boolean;
-}
-
-export interface LayoutContextProps {
-    layoutState: LayoutState;
-    setLayoutState: React.Dispatch<React.SetStateAction<LayoutState>>;
-    onMenuToggle: () => void;
-    isDesktop: () => boolean;
-}
-
-export const LayoutContext = createContext<LayoutContextProps>({} as LayoutContextProps);
+import { useState, useCallback, type PropsWithChildren } from "react";
+import { LayoutContext, type LayoutState } from "@/layouts";
 
 export function LayoutProvider({ children }: PropsWithChildren) {
     const [layoutState, setLayoutState] = useState<LayoutState>({
@@ -40,7 +26,7 @@ export function LayoutProvider({ children }: PropsWithChildren) {
         }
     }, [isDesktop]);
 
-    const value: LayoutContextProps = {
+    const value = {
         layoutState,
         setLayoutState,
         onMenuToggle,
@@ -53,3 +39,4 @@ export function LayoutProvider({ children }: PropsWithChildren) {
         </LayoutContext.Provider>
     );
 }
+

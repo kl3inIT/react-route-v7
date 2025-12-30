@@ -2,7 +2,7 @@ import { useAuth } from "react-oidc-context";
 import { Outlet, useLocation } from "react-router";
 import { ProgressSpinner } from "primereact/progressspinner";
 
-export function ProtectedRoute() {
+export function RequireLogin() {
   const auth = useAuth();
   const location = useLocation();
 

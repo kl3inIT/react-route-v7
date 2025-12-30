@@ -91,7 +91,7 @@ export function AppTopbar() {
             start={startContent}
             center={centerContent}
             end={endContent}
-            
+            className="surface-card shadow-2 px-4 py-0 border-none border-noround align-items-center"
             style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 997, height: "60px" }}
         />
     );
