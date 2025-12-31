@@ -1,10 +1,20 @@
+/**
+ * UserTableSuspense - Phiên bản sử dụng useSuspenseQuery
+ * 
+ * Điểm khác biệt so với UserTable:
+ * - Không cần handle isLoading, error trong component
+ * - Data luôn được đảm bảo có (guaranteed by Suspense)
+ * - Loading state được handle bởi Suspense boundary
+ * - Error state được handle bởi ErrorBoundary
+ * 
+ * Sử dụng với: <SuspenseLoader><UserTableSuspense /></SuspenseLoader>
+ */
 import { DataTable, type DataTableSelectionMultipleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import { Toolbar } from "primereact/toolbar";
-import { ProgressSpinner } from "primereact/progressspinner";
 import { Card } from "primereact/card";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
@@ -17,14 +27,15 @@ import {
     openEditDialog,
     openDeleteDialog,
 } from "../slice";
-import { useGetListUsers } from "../hooks";
-import { HttpError } from "@/api/HttpError";
+import { useSuspenseGetListUsers } from "../hooks";
 import type { User } from "../types";
 
-export function UserTable() {
+export function UserTableSuspense() {
     const dispatch = useAppDispatch();
     const { selectedUsers, globalFilter } = useAppSelector((state: RootState) => state.users);
-    const { data: users = [], isLoading, error, refetch } = useGetListUsers();
+    
+    // ✅ useSuspenseQuery - data is GUARANTEED, no loading/error states
+    const { data: users, refetch } = useSuspenseGetListUsers();
 
     const onSelectionChange = (e: DataTableSelectionMultipleChangeEvent<User[]>) => {
         dispatch(setSelectedUsers(e.value));
@@ -119,49 +130,7 @@ export function UserTable() {
         </div>
     );
 
-    if (isLoading) {
-        return (
-            <Card>
-                <div style={{ display: "flex", justifyContent: "center", padding: "3rem" }}>
-                    <ProgressSpinner />
-                </div>
-            </Card>
-        );
-    }
-
-    if (error) {
-        const errorMessage = error instanceof HttpError
-            ? error.userMessage()
-            : error.message || "Đã xảy ra lỗi không xác định";
-
-        const isRetryable = error instanceof HttpError ? error.isRetryable() : true;
-
-        return (
-            <Card>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "3rem", gap: "1rem" }}>
-                    <i
-                        className="pi pi-exclamation-triangle"
-                        style={{ fontSize: "3rem", color: "var(--red-500)" }}
-                    />
-                    <h3 style={{ margin: 0, color: "var(--text-color)" }}>
-                        Không thể tải dữ liệu
-                    </h3>
-                    <p style={{ margin: 0, color: "var(--text-color-secondary)", textAlign: "center" }}>
-                        {errorMessage}
-                    </p>
-                    {isRetryable && (
-                        <Button
-                            label="Thử lại"
-                            icon="pi pi-refresh"
-                            severity="secondary"
-                            outlined
-                            onClick={() => refetch()}
-                        />
-                    )}
-                </div>
-            </Card>
-        );
-    }
+    // ✅ Không cần if (isLoading) hay if (error) - Suspense/ErrorBoundary xử lý
 
     return (
         <Card>
@@ -208,3 +177,4 @@ export function UserTable() {
         </Card>
     );
 }
+

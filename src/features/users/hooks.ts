@@ -1,12 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getUsers, getUserById, searchUsers, createUser, updateUser, deleteUser } from "./api";
+import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { createUser, updateUser, deleteUser } from "./api";
 import { toast } from "@/services/notification";
 import { HttpError } from "@/api/HttpError";
 import type { User, UserSearchParams, CreateUserDto, UpdateUserDto } from "./types";
-
-// ============================================================================
-// Helper: Extract user-friendly error message
-// ============================================================================
+import {
+    getUsersListQueryOptions,
+    getUserDetailQueryOption,
+    searchUsersQuery,
+    userKeys,
+} from "./queryOptions";
 
 function getErrorMessage(error: unknown): string {
     if (error instanceof HttpError) {
@@ -18,49 +20,28 @@ function getErrorMessage(error: unknown): string {
     return "Đã xảy ra lỗi không xác định";
 }
 
-// ============================================================================
-// Query Keys
-// ============================================================================
-
-export const userKeys = {
-    all: ["users"] as const,
-    lists: () => [...userKeys.all, "list"] as const,
-    list: (params?: UserSearchParams) => [...userKeys.lists(), params] as const,
-    details: () => [...userKeys.all, "detail"] as const,
-    detail: (id: string) => [...userKeys.details(), id] as const,
-};
-
-// ============================================================================
-// Queries (GET operations)
-// → Lỗi sẽ được xử lý bằng Fallback UI trong component
-// ============================================================================
-
-export function useUsers() {
-    return useQuery<User[], Error>({
-        queryKey: userKeys.lists(),
-        queryFn: getUsers,
-    });
+// ============ Standard Query Hooks (with loading/error states) ============
+export function useGetListUsers() {
+    return useQuery(getUsersListQueryOptions());
 }
 
-export function useUser(userId: string) {
-    return useQuery<User, Error>({
-        queryKey: userKeys.detail(userId),
-        queryFn: () => getUserById(userId),
-        enabled: !!userId,
-    });
+export function useGetUserById(id: string) {
+    return useQuery(getUserDetailQueryOption(id));
 }
 
 export function useSearchUsers(params: UserSearchParams) {
-    return useQuery<User[], Error>({
-        queryKey: userKeys.list(params),
-        queryFn: () => searchUsers(params),
-    });
+    return useQuery(searchUsersQuery(params));
 }
 
-// ============================================================================
-// Mutations (POST/PUT/DELETE operations)
-// → Lỗi sẽ được xử lý bằng Toast notification
-// ============================================================================
+// ============ Suspense Query Hooks (for use with Suspense boundary) ============
+// Data is guaranteed - no loading/error handling needed in component
+export function useSuspenseGetListUsers() {
+    return useSuspenseQuery(getUsersListQueryOptions());
+}
+
+export function useSuspenseGetUserById(id: string) {
+    return useSuspenseQuery(getUserDetailQueryOption(id));
+}
 
 export function useCreateUser() {
     const queryClient = useQueryClient();
@@ -68,7 +49,7 @@ export function useCreateUser() {
     return useMutation({
         mutationFn: (data: CreateUserDto) => createUser(data),
         onSuccess: (newUser) => {
-            queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+            void queryClient.invalidateQueries({ queryKey: userKeys.lists() });
 
             queryClient.setQueryData<User[]>(userKeys.lists(), (old) =>
                 old ? [...old, newUser] : [newUser]
@@ -103,7 +84,7 @@ export function useUpdateUser() {
                 )
             );
 
-            queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+            void queryClient.invalidateQueries({ queryKey: userKeys.lists() });
 
             toast.success("Cập nhật thành công!", {
                 detail: `Đã cập nhật "${updatedUser.username}"`,
@@ -128,7 +109,7 @@ export function useDeleteUser() {
             );
 
             queryClient.removeQueries({ queryKey: userKeys.detail(deletedUserId) });
-            queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+            void queryClient.invalidateQueries({ queryKey: userKeys.lists() });
 
             toast.success("Xóa người dùng thành công!");
         },
@@ -157,7 +138,7 @@ export function useDeleteUsers() {
                 queryClient.removeQueries({ queryKey: userKeys.detail(id) });
             });
 
-            queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+            void queryClient.invalidateQueries({ queryKey: userKeys.lists() });
 
             toast.success(`Đã xóa ${deletedIds.length} người dùng!`);
         },
