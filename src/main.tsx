@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 
@@ -18,7 +17,7 @@ import { LayoutProvider } from "./layouts";
 import { store } from "./store/store";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
+    // <StrictMode >
         <ReduxProvider store={store}>
             <QueryProvider>
                 <PrimeReactProvider>
@@ -32,5 +31,5 @@ createRoot(document.getElementById("root")!).render(
                 </PrimeReactProvider>
             </QueryProvider>
         </ReduxProvider>
-    </StrictMode>
+     //</StrictMode>
 );

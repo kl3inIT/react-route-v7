@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { queryClient } from "@/api/queryClient";
+import { queryClient } from "@/contexts/queryClient.ts";
 import { getUsers } from "@/features/users/api";
 import { userKeys } from "@/features/users/hooks";
 
