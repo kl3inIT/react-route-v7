@@ -8,7 +8,6 @@ export { default as usersReducer } from "./slice";
 export * from "./slice";
 
 export { UserTable } from "./components/UserTable";
-export { UserTableSuspense } from "./components/UserTableSuspense";
 export { UserForm } from "./components/UserForm";
 export { UserDialog } from "./components/UserDialog";
 export { DeleteUserDialog } from "./components/DeleteUserDialog";

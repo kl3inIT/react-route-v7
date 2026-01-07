@@ -1,2 +1,0 @@
-export { SuspenseLoader } from "./SuspenseLoader";
-

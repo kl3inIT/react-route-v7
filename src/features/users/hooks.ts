@@ -20,7 +20,6 @@ function getErrorMessage(error: unknown): string {
     return "Đã xảy ra lỗi không xác định";
 }
 
-// ============ Standard Query Hooks (with loading/error states) ============
 export function useGetListUsers() {
     return useQuery(getUsersListQueryOptions());
 }
@@ -33,8 +32,6 @@ export function useSearchUsers(params: UserSearchParams) {
     return useQuery(searchUsersQuery(params));
 }
 
-// ============ Suspense Query Hooks (for use with Suspense boundary) ============
-// Data is guaranteed - no loading/error handling needed in component
 export function useSuspenseGetListUsers() {
     return useSuspenseQuery(getUsersListQueryOptions());
 }
