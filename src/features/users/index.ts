@@ -1,8 +1,22 @@
 export type { User, CreateUserDto, UpdateUserDto, UserSearchParams } from "./types";
 export * from "./api";
-export * from "./queryOptions";
+export {
+    userKeys,
+    getUsersListQueryOptions,
+    getUserDetailQueryOption,
+    searchUsersQuery,
+    usersListQuery, // Alias for loader
+} from "./queryOptions";
 
-export * from "./hooks";
+export {
+    useGetListUsers,
+    useGetUserById,
+    useSearchUsers,
+    useCreateUser,
+    useUpdateUser,
+    useDeleteUser,
+    useDeleteUsers,
+} from "./hooks";
 
 export { default as usersReducer } from "./slice";
 export * from "./slice";

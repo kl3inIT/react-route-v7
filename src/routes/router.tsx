@@ -42,32 +42,21 @@ export const router = createBrowserRouter([
                         },
                     },
 
+                    // ========= Users =========
                     {
-                        element: (
-                            <RequirePermission
-                                roles={[
-                                    JMIX_ROLES.SYSTEM_FULL_ACCESS,
-                                    JMIX_ROLES.ADMIN,
-                                ]}
-                            />
-                        ),
-                        children: [
-                            {
-                                path: ROUTES.USERS,
-                                lazy: async () => {
-                                    const [{ default: Component }, module] =
-                                        await Promise.all([
-                                            import("@/pages/users/UsersPage"),
-                                            import("@/pages/users/loader"),
-                                        ]);
+                        path: ROUTES.USERS,
+                        lazy: async () => {
+                            const [{ default: Component }, module] =
+                                await Promise.all([
+                                    import("@/pages/users/UsersPage"),
+                                    import("@/pages/users/loader"),
+                                ]);
 
-                                    return {
-                                        Component,
-                                        loader: module.loader(queryClient),
-                                    };
-                                },
-                            },
-                        ],
+                            return {
+                                Component,
+                                loader: module.loader(queryClient),
+                            };
+                        },
                     },
 
                     {
